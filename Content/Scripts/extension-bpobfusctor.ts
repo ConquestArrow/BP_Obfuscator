@@ -1007,7 +1007,10 @@ function main(){
             
             
             g.ModifyObject(true)
+            g.CreateCopyForUndoBuffer()
             g.Nodes.forEach(v => v.ModifyObject(true))  //this line must be required.
+            g.Nodes.forEach(v => v.CreateCopyForUndoBuffer())
+            
             //graphView.ModifyObject(true)
             
             
@@ -1019,9 +1022,25 @@ function main(){
             //TODO: async await
 
             //layout
-            g = ObfuscateLayout(g, currentLayoutOption);
+            g = obfuscateLayout(g, currentLayoutOption);
+
+            //remove all comment node
+            //TODO
+            if(isRemovingCommentNode){
+                g.Nodes = g.Nodes.filter( v => {
+                    console.log("node is", v.GetName())
+                    return !(v instanceof EdGraphNode_Comment)
+                }
+                )
+            }
+
+            //remove all comment bubble text
+            //TODO
+
 
             //set dirty
+            
+            g.Nodes.forEach(v => v.PostEditChange())
             g.PostEditChange();
             g.MarkPackageDirty()
 
@@ -1043,7 +1062,7 @@ function main(){
         
     }
 
-    function ObfuscateLayout(g:JavascriptGraphEdGraph, opt:EObfuscateLayoutMode){
+    function obfuscateLayout(g:JavascriptGraphEdGraph, opt:EObfuscateLayoutMode){
         let mode:EObfuscateLayoutMode;
         //mode = EObfuscateMode.Random;
         mode = opt;
@@ -1070,6 +1089,19 @@ function main(){
                 
             }
         }
+        return g;
+    }
+
+    function removeAllCommentNodes(g:JavascriptGraphEdGraph){
+
+        g.Nodes.map((v, i, a)=>{
+            //console.log("node is", typeof v)
+            if(v instanceof EdGraphNode_Comment){
+                //console.log(typeof v)
+                v.DestroyNode()
+            }
+        })
+
         return g;
     }
      
