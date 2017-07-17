@@ -1,4 +1,4 @@
-# BP_Obfascator - A Simple Blueprint Obfascator Tool
+# BP_Obfuscator - A Simple Blueprint Obfuscating Tool
 
 this tool is currently **WIP!!**
 
