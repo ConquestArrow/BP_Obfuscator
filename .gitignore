@@ -1,0 +1,8 @@
+/Intermediate/
+/Saved/
+/Content/Collections/
+/Content/Developers/
+/Content/Scripts/node_modules/*
+/Content/Scripts/typings/ue.d.ts
+/Content/Scripts/typings/_part_*_ue.d.ts
+/Content/Scripts/*.js
