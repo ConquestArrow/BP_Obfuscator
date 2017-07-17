@@ -37,7 +37,7 @@ function main(){
     let w = new JavascriptGraphEditorWidget(bp.UbergraphPages[0].GetOuter())
     w.SetGraph(bp.UbergraphPages[0] as JavascriptGraphEdGraph)
     let appear = new JavascriptGraphAppearanceInfo();
-    appear.CornerText = "BP Obfascator"
+    appear.CornerText = "BP Obfuscator"
     w.AppearanceInfo = appear;
 
 
@@ -50,7 +50,7 @@ function main(){
     commands
     ---------------------------*/
     const enum CmdNum{
-        Obfascate,
+        Obfuscate,
         Random,
         Shrink,
         RemoveCommentNode,
@@ -61,16 +61,16 @@ function main(){
     options
     ---------------------------*/
     /**
-     * Obfascate layout options
+     * Obfuscate layout options
      */
-    enum EObfascateLayoutMode{
+    enum EObfuscateLayoutMode{
         Random,
         Shrink
     }
     /**
-     * @default EObfascateLayoutMode.Random
+     * @default EObfuscateLayoutMode.Random
      */
-    let currentLayoutOption = EObfascateLayoutMode.Random;
+    let currentLayoutOption = EObfuscateLayoutMode.Random;
 
     let isRemovingCommentNode = true;
 
@@ -103,11 +103,11 @@ function main(){
     let toolBtnStyle = JavascriptUMGLibrary.CreateSlateStyle(ButtonStyleName)
     toolBtnStyle.SetContentRoot( Context.GetDir('EngineContent') + "Editor/Slate" );
 	toolBtnStyle.SetCoreContentRoot( Context.GetDir('EngineContent') + "Slate" );    
-    toolBtnStyle.AddImageBrush("BP_Obfascator.Obfascate", toolBtnStyle.RootToContentDir("Icons/icon_Editor_Preferences_40x.png"), Icon40x40, {R:1,G:1,B:1,A:1} as LinearColor, 'NoTile', 'FullColor' )
-    toolBtnStyle.AddImageBrush("BP_Obfascator.Save", toolBtnStyle.RootToContentDir("Icons/icon_SaveAsset_40x.png"), Icon40x40, {R:1,G:1,B:1,A:1} as LinearColor, 'NoTile', 'FullColor' )
-    toolBtnStyle.AddBoxBrush("BP_Obfascator.RemoveCommentNode", toolBtnStyle.RootToContentDir("Icons/icon_Blueprint_Comment_16x.png"), {} as Margin,{R:1,G:1,B:1,A:1} as LinearColor,ESlateBrushImageType.FullColor)
+    toolBtnStyle.AddImageBrush("BP_Obfuscator.Obfuscate", toolBtnStyle.RootToContentDir("Icons/icon_Editor_Preferences_40x.png"), Icon40x40, {R:1,G:1,B:1,A:1} as LinearColor, 'NoTile', 'FullColor' )
+    toolBtnStyle.AddImageBrush("BP_Obfuscator.Save", toolBtnStyle.RootToContentDir("Icons/icon_SaveAsset_40x.png"), Icon40x40, {R:1,G:1,B:1,A:1} as LinearColor, 'NoTile', 'FullColor' )
+    toolBtnStyle.AddBoxBrush("BP_Obfuscator.RemoveCommentNode", toolBtnStyle.RootToContentDir("Icons/icon_Blueprint_Comment_16x.png"), {} as Margin,{R:1,G:1,B:1,A:1} as LinearColor,ESlateBrushImageType.FullColor)
 
-    toolBtnStyle.AddBoxBrush("BP_Obfascator.RemoveCommentBubble", toolBtnStyle.RootToContentDir("Icons/icon_Blueprint_CommentBubbleOn_16x.png"), {} as Margin,{R:1,G:1,B:1,A:1} as LinearColor,ESlateBrushImageType.FullColor)
+    toolBtnStyle.AddBoxBrush("BP_Obfuscator.RemoveCommentBubble", toolBtnStyle.RootToContentDir("Icons/icon_Blueprint_CommentBubbleOn_16x.png"), {} as Margin,{R:1,G:1,B:1,A:1} as LinearColor,ESlateBrushImageType.FullColor)
     //toolBtnStyle.AddBoxBrush()
     
     
@@ -115,9 +115,10 @@ function main(){
 
 
     //layout
+    //not use
     let layout = {
         Type:"Layout",
-        Name:"BP_Obfascator",   
+        Name:"BP_Obfuscator",   
         PrimaryAreaIndex: 0,
         Areas:[
             {
@@ -339,7 +340,7 @@ function main(){
                     JavascriptGraphEditorWidget,
                     {
                         AppearanceInfo:{
-                            CornerText:"BP Obfascator"
+                            CornerText:"BP Obfuscator"
                         },
                         $link: (elem:JavascriptGraphEditorWidget) => {
                             elem.SetGraph(bp.UbergraphPages[0] as JavascriptGraphEdGraph)
@@ -385,7 +386,7 @@ function main(){
                 },()=>graphTab)]
                 tmInner.Layout = JSON.stringify({
                     Type:"Layout",
-                    Name:"BP_Obfascator",   
+                    Name:"BP_Obfuscator",   
                     PrimaryAreaIndex: 0,
                     Area:[
                         {
@@ -458,8 +459,8 @@ function main(){
     let mkTab = function(tm:JavascriptEditorTabManager){
         EMaker.tabSpawner(
             {
-                DisplayName:"BP Obfascator",
-                TabId: "BPObfascator@",
+                DisplayName:"BP Obfuscator",
+                TabId: "BPObfuscator@",
                 Role: EJavascriptTabRole.MajorTab,
                 Group: (<any>global).editorGroup
             },
@@ -485,7 +486,7 @@ function main(){
                                 commandList,
                                 <any>((b:JavascriptMenuBuilder)=>{
                                     b.AddPullDownMenu(
-                                        "Option","obfascate options",
+                                        "Option","Obfuscate options",
                                         <any>((b:JavascriptMenuBuilder)=>{
                                             b.PushCommandList(commandList)
                                             //b.AddSeparator()
@@ -652,7 +653,7 @@ function main(){
                                     },
                                     ColorAndOpacity:btnFColor
                                 },
-                                UMG.text({Font:btnFont},"Obfascate!")
+                                UMG.text({Font:btnFont},"Obfuscate!")
                             )*/
                         ),
                         UMG.div(
@@ -687,10 +688,10 @@ function main(){
                                             //b.EndSection()
 
 
-                                            b.BeginSection("Obfascate")
+                                            b.BeginSection("Obfuscate")
                                             
                                             b.AddToolBarButton(
-                                                commands.CommandInfos[CmdNum.Obfascate]
+                                                commands.CommandInfos[CmdNum.Obfuscate]
                                             )
 
                                             let cmx = new JavascriptComboButtonContext
@@ -746,23 +747,6 @@ function main(){
                                             JavascriptMultiBox.Bind(b)
                                         })
                                     )
-                                    //}
-                                    /*
-                                    else if(id=="Sub"){
-                                        JavascriptMenuLibrary.CreateToolbarBuilder(
-                                            commandList,
-                                            EOrientation.Orient_Vertical,
-                                            <any>((b:JavascriptMenuBuilder)=>{
-                                                b.AddToolBarButton(
-                                                    commands.CommandInfos[1]
-                                                )
-                                                b.AddToolBarButton(
-                                                    commands.CommandInfos[2]
-                                                )
-                                            })
-                                        )
-                                        elem.AddSubMenu(builder, "Option", "Option","...", false)
-                                    }*/
                                 }
                             }),
                             UMG(Border,
@@ -783,7 +767,7 @@ function main(){
                                 UMG(JavascriptGraphEditorWidget,
                                 {
                                     AppearanceInfo:{
-                                        CornerText:"BP Obfascator",
+                                        CornerText:"BP Obfuscator",
                                         InstructionText:"Select any node graph"                                    
                                     },
                                     $link: (elem:JavascriptGraphEditorWidget) => {
@@ -867,7 +851,7 @@ function main(){
 
     
     function setCommands(graphView:JavascriptGraphEditorWidget){
-        let context = JavascriptMenuLibrary.NewBindingContext('BP_Obfascator', 'Menu', '', ButtonStyleName);
+        let context = JavascriptMenuLibrary.NewBindingContext('BP_Obfuscator', 'Menu', '', ButtonStyleName);
         let cmds = new JavascriptUICommands()
 
         function init() {
@@ -875,10 +859,10 @@ function main(){
 
             let doObf = new JavascriptUICommand()
             doObf.ActionType = EJavasrciptUserInterfaceActionType.Button;
-            doObf.FriendlyName = "Obfascate"
-            doObf.Id = "Obfascate"
+            doObf.FriendlyName = "Obfuscate"
+            doObf.Id = "Obfuscate"
             doObf.CommandInfo = new JavascriptUICommandInfo();
-            doObf.Description = "Obfascate ( Hard to read ) a selected graph nodes."
+            doObf.Description = "Obfuscate ( Hard to read ) a selected graph nodes."
 
             let optLayoutRandom = new JavascriptUICommand()
             optLayoutRandom.ActionType = EJavasrciptUserInterfaceActionType.RadioButton;
@@ -893,11 +877,12 @@ function main(){
             optLayoutShrink.Id = "Shrink"
             optLayoutShrink.Description = "Shrink nodes"
 
+            //not use
             let editSave = makeCommand(
                 "Save",
                 EJavasrciptUserInterfaceActionType.Button,
                 "Save Graph",
-                "Save obfascated graph"
+                "Save Obfuscated graph"
             )
 
             let optRemoveCommnetNode = makeCommand(
@@ -921,28 +906,21 @@ function main(){
                 optRemoveCommnetNode,
                 optRemoveCommnetBubble
             ]
-            /*
-            cmds.Commands[CmdNum.Obfascate] = doObf;
-            cmds.Commands[CmdNum.Random] = optLayoutRandom
-            cmds.Commands[CmdNum.Shrink] = optLayoutShrink;
-            cmds.Commands[CmdNum.RemoveCommentNode] = optRemoveCommnetNode
-            cmds.Commands[CmdNum.RemoveCommentBubble] = optRemoveCommnetBubble
-            */
 
 
             cmds.OnExecuteAction = <any>((id:string) =>{
                 console.log("id", id)
                 switch(id){
-                    case "Obfascate":{
-                        obfascate();
+                    case "Obfuscate":{
+                        Obfuscate();
                         break;
                     }
                     case "Random":{
-                        currentLayoutOption = EObfascateLayoutMode.Random
+                        currentLayoutOption = EObfuscateLayoutMode.Random
                         break;
                     }
                     case "Shrink":{
-                        currentLayoutOption = EObfascateLayoutMode.Shrink
+                        currentLayoutOption = EObfuscateLayoutMode.Shrink
                         break;
                     }
                     case "Save":{
@@ -974,11 +952,11 @@ function main(){
 
             cmds.OnIsActionChecked = <any>((id:string)=>{
                 switch(id){
-                    //case "Obfascate":return false;
+                    //case "Obfuscate":return false;
                     case "Random":
-                        return currentLayoutOption == EObfascateLayoutMode.Random;
+                        return currentLayoutOption == EObfuscateLayoutMode.Random;
                     case "Shrink":
-                        return currentLayoutOption == EObfascateLayoutMode.Shrink;
+                        return currentLayoutOption == EObfuscateLayoutMode.Shrink;
                     case "RemoveCommentNode":
                         return isRemovingCommentNode;
                     case "RemoveCommentBubble":
@@ -1010,10 +988,10 @@ function main(){
     
 
     /**
-     * Obfascate graph nodes
+     * Obfuscate graph nodes
      * 
      */
-    function obfascate(){
+    function Obfuscate(){
         let g = graphView.EdGraph;  //current selected graph
 
         if(!g)return;
@@ -1025,7 +1003,7 @@ function main(){
         
         //undo transaction
         //https://github.com/ncsoft/Unreal.js/wiki/Playing-within-editor
-        $execTransaction(`obfascate ${outer.GetName()}.${g.GetName()} : BP Obfascator`,()=>{
+        $execTransaction(`Obfuscate ${outer.GetName()}.${g.GetName()} : BP Obfuscator`,()=>{
             
             
             g.ModifyObject(true)
@@ -1041,7 +1019,7 @@ function main(){
             //TODO: async await
 
             //layout
-            g = obfascateLayout(g, currentLayoutOption);
+            g = ObfuscateLayout(g, currentLayoutOption);
 
             //set dirty
             g.PostEditChange();
@@ -1065,12 +1043,12 @@ function main(){
         
     }
 
-    function obfascateLayout(g:JavascriptGraphEdGraph, opt:EObfascateLayoutMode){
-        let mode:EObfascateLayoutMode;
-        //mode = EObfascateMode.Random;
+    function ObfuscateLayout(g:JavascriptGraphEdGraph, opt:EObfuscateLayoutMode){
+        let mode:EObfuscateLayoutMode;
+        //mode = EObfuscateMode.Random;
         mode = opt;
         switch(mode){
-            case EObfascateLayoutMode.Random:{
+            case EObfuscateLayoutMode.Random:{
 
                 g.Nodes.forEach(v =>{
                     v.NodePosX = Math.random() * 1000;
@@ -1079,7 +1057,7 @@ function main(){
 
                 break;
             }
-            case EObfascateLayoutMode.Shrink:{
+            case EObfuscateLayoutMode.Shrink:{
 
                 g.Nodes.forEach(v => {
                     v.NodePosX = v.NodePosY = 0;
@@ -1088,7 +1066,7 @@ function main(){
                 break;
             }
             default:{
-                throw Error(`Obfascate mode "${mode}" is unknown.`)
+                throw Error(`Obfuscate mode "${mode}" is unknown.`)
                 
             }
         }
