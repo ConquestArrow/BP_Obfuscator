@@ -1035,12 +1035,12 @@ function main(){
             }
 
             //remove all comment bubble text
-            //TODO
+            if(isRemovingCommentBubble)removeAllCommentBubbles(g)
 
 
             //set dirty
             
-            g.Nodes.forEach(v => v.PostEditChange())
+            //g.Nodes.forEach(v => v.PostEditChange())
             g.PostEditChange();
             g.MarkPackageDirty()
 
@@ -1103,6 +1103,16 @@ function main(){
         })
 
         return g;
+    }
+
+    function removeAllCommentBubbles(g:JavascriptGraphEdGraph){
+
+        g.Nodes.forEach(v => {
+            v.bCommentBubblePinned = false;
+            v.bCommentBubbleVisible = false //need this line; stop undo buffer increasing 
+            v.NodeComment = ""
+        })
+
     }
      
 
