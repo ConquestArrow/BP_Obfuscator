@@ -49,12 +49,16 @@ function main(){
     /* -------------------------
     commands
     ---------------------------*/
-    const enum CmdNum{
+    enum CmdNum{
         Obfuscate,
         Random,
         Shrink,
         RemoveCommentNode,
-        RemoveCommentBubble
+        RemoveCommentBubble,
+        RenameVariable,
+        RenameFunction,
+        RenameMacro,
+        
     }
 
     /* --------------------------
@@ -76,6 +80,11 @@ function main(){
 
     let isRemovingCommentBubble = true;
 
+    let isRename = {
+        [CmdNum.RenameVariable]:true,
+        [CmdNum.RenameFunction]:false,
+        [CmdNum.RenameMacro]:false
+    }
 
     /**
      * key = graph, value = parent bp
@@ -665,10 +674,11 @@ function main(){
                                         VerticalAlignment: EVerticalAlignment.VAlign_Fill,
                                         Padding:5
                                     }
-                                } as any
+                                } as any,
                             },                            
                             UMG(JavascriptMultiBox,{
                                 //"CommandList":graphView.CommandList,
+                                
                                 OnHook:(id:string, elem:JavascriptMultiBox,builder:JavascriptMenuBuilder
                                 )=>{
                                     console.log("Multibox - id:", id)
@@ -727,6 +737,17 @@ function main(){
                                                         b2.AddToolBarButton(commands.CommandInfos[CmdNum.RemoveCommentNode])
                                                         
                                                         b2.AddToolBarButton(commands.CommandInfos[CmdNum.RemoveCommentBubble])
+                                                        
+                                                        
+                                                        b2.EndSection()
+
+                                                        b2.BeginSection("Rename")
+
+                                                        b2.AddWidget(I(UMG.text({Font:menuFont},"Rename")),"",true)
+
+                                                        b2.AddToolBarButton(commands.CommandInfos[CmdNum.RenameVariable])
+                                                        b2.AddToolBarButton(commands.CommandInfos[CmdNum.RenameFunction])
+                                                        b2.AddToolBarButton(commands.CommandInfos[CmdNum.RenameMacro])
                                                         
                                                         
                                                         b2.EndSection()
@@ -899,12 +920,36 @@ function main(){
                 "Remove all comment bubble texts"
             )
 
+            let optRenameFunction = makeCommand(
+                "RenameFunction",
+                EJavasrciptUserInterfaceActionType.ToggleButton,
+                "Rename function names",
+                "Rename BP function names"
+            )
+
+            let optRenameMacro = makeCommand(
+                "RenameMacro",
+                EJavasrciptUserInterfaceActionType.ToggleButton,
+                "Rename macro names",
+                "Rename macro names"
+            )
+
+            let optRenameVariable = makeCommand(
+                "RenameVariable",
+                EJavasrciptUserInterfaceActionType.ToggleButton,
+                "Rename Variables",
+                "Rename Varialbles"
+            )
+
             cmds.Commands = [
                 doObf,
                 optLayoutRandom,
                 optLayoutShrink,
                 optRemoveCommnetNode,
-                optRemoveCommnetBubble
+                optRemoveCommnetBubble,
+                optRenameVariable,
+                optRenameFunction,
+                optRenameMacro
             ]
 
 
@@ -935,6 +980,18 @@ function main(){
                         console.log("isRemovingCommentBubble",isRemovingCommentBubble)
                         break;
                     }
+                    case CmdNum[CmdNum.RenameVariable]:{
+                        isRename[CmdNum.RenameVariable] = !isRename[CmdNum.RenameVariable];
+                        break;
+                    }
+                    case CmdNum[CmdNum.RenameFunction]:{
+                        isRename[CmdNum.RenameFunction] = !isRename[CmdNum.RenameFunction];
+                        break;
+                    }
+                    case CmdNum[CmdNum.RenameMacro]:{
+                        isRename[CmdNum.RenameMacro] = !isRename[CmdNum.RenameMacro];
+                        break;
+                    }
                     default:{
                         //do nothing
                     }
@@ -961,6 +1018,12 @@ function main(){
                         return isRemovingCommentNode;
                     case "RemoveCommentBubble":
                         return isRemovingCommentBubble;
+                    case CmdNum[CmdNum.RenameVariable]:
+                        return isRename[CmdNum.RenameVariable];
+                    case CmdNum[CmdNum.RenameFunction]:
+                        return isRename[CmdNum.RenameFunction];
+                    case CmdNum[CmdNum.RenameMacro]:
+                        return isRename[CmdNum.RenameMacro];
                     default:
                         return false;
                 }
