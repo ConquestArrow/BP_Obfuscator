@@ -497,21 +497,7 @@ function main(){
                                     b.AddPullDownMenu(
                                         "Option","Obfuscate options",
                                         <any>((b:JavascriptMenuBuilder)=>{
-                                            b.PushCommandList(commandList)
-                                            //b.AddSeparator()
-                                            //b.AddMenuEntry()
-                                            /*
-                                            b.BeginSection("Layout")
-                                            b.AddWidget(I(UMG.text({Font:menuFont},"Layout")),"",true)
-                                            b.AddToolBarButton(commands.CommandInfos[CmdNum.Random])
-                                            b.AddToolBarButton(commands.CommandInfos[CmdNum.Shrink])
-                                            b.EndSection()
-                                            b.BeginSection("group 2")
-
-                                            b.AddToolBarButton(commands.CommandInfos[CmdNum.RemoveCommentNode])
-                                            //elem.AddSubMenu(b,'Sub','Sub menu','Sub menu tooltip',true)
-                                            b.EndSection()
-                                            */
+                                            makeMenuOption(b)
                                         })
                                     )
                                     //elem.AddPullDownMenu(b,"Sub","men2","sub...")
@@ -714,44 +700,8 @@ function main(){
                                                     console.log("mb2",id2)
                                                     //if(id2=="Main"){
                                                     JavascriptMenuLibrary.CreateMenuBuilder(commandList,false, <any>((b2:JavascriptMenuBuilder)=>{
-                                                        b2.PushCommandList(commandList)
-                                                        b2.BeginSection("Layout")
-                                                        b2.AddWidget(I(UMG.text({Font:menuFont},"Layout")),"",true)
-                                                        //ele.AddPullDownMenu(b2,"Test","test","test...")
-                                                        //ele.AddPullDownMenu(b3,"Test2","test2","test2...")
-                                                        //ele.AddSubMenu(b3,"sub","sub","sub...",false)
-                                                        b2.AddToolBarButton(commands.CommandInfos[CmdNum.Random])
-                                                        b2.AddToolBarButton(commands.CommandInfos[CmdNum.Shrink])
                                                         
-                                                        b2.EndSection()
-
-                                                        //b2.AddSeparator()
-
-                                                        
-                                                        
-
-                                                        b2.BeginSection("Removing")
-
-                                                        b2.AddWidget(I(UMG.text({Font:menuFont},"Removing")),"",true)
-
-                                                        b2.AddToolBarButton(commands.CommandInfos[CmdNum.RemoveCommentNode])
-                                                        
-                                                        b2.AddToolBarButton(commands.CommandInfos[CmdNum.RemoveCommentBubble])
-                                                        
-                                                        
-                                                        b2.EndSection()
-
-                                                        b2.BeginSection("Rename")
-
-                                                        b2.AddWidget(I(UMG.text({Font:menuFont},"Rename")),"",true)
-
-                                                        b2.AddToolBarButton(commands.CommandInfos[CmdNum.RenameVariable])
-                                                        b2.AddToolBarButton(commands.CommandInfos[CmdNum.RenameFunction])
-                                                        b2.AddToolBarButton(commands.CommandInfos[CmdNum.RenameMacro])
-                                                        
-                                                        
-                                                        b2.EndSection()
-
+                                                        makeMenuOption(b2)
                                                         JavascriptMultiBox.Bind(b2)
                                                 
                                                     }))
@@ -830,6 +780,30 @@ function main(){
      * Functions
      * 
      * -------------------------------*/
+
+    function makeMenuOption(b:JavascriptMenuBuilder){
+        b.PushCommandList(commandList)
+
+        b.BeginSection("Layout")
+            b.AddWidget(I(UMG.text({Font:menuFont},"Layout")),"",true)
+            b.AddToolBarButton(commands.CommandInfos[CmdNum.Random])
+            b.AddToolBarButton(commands.CommandInfos[CmdNum.Shrink])
+        b.EndSection()
+
+        b.BeginSection("Removing")
+            b.AddWidget(I(UMG.text({Font:menuFont},"Removing")),"",true)
+            b.AddToolBarButton(commands.CommandInfos[CmdNum.RemoveCommentNode]) 
+            b.AddToolBarButton(commands.CommandInfos[CmdNum.RemoveCommentBubble])
+        b.EndSection()
+
+        b.BeginSection("Rename")
+            b.AddWidget(I(UMG.text({Font:menuFont},"Rename")),"",true)
+            b.AddToolBarButton(commands.CommandInfos[CmdNum.RenameVariable])
+            b.AddToolBarButton(commands.CommandInfos[CmdNum.RenameFunction])
+            b.AddToolBarButton(commands.CommandInfos[CmdNum.RenameMacro])
+        b.EndSection()
+
+    }
 
      //unused
     function setSchema(graph:EdGraph){
