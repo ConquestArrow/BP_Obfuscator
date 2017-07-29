@@ -1,18 +1,30 @@
 {
-  "name": "bpobfascator",
-  "version": "0.0.1",
-  "description": "blueprint node graph obfascator",
+  "name": "bpobfuscator",
+  "version": "0.1.0",
+  "description": "blueprint node graph obfuscator",
   "main": "aliases.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ConquestArrow/BP_Obfuscator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ConquestArrow/BP_Obfuscator/issues"
+  },
+  "engines": {
+    "unreal.js":">=0.2.7"
+  },
   "keywords": [
     "UnrealEngine",
-    "Unreal.js"
+    "Unreal.js",
+    "obfuscate"
   ],
   "author": "ConquestArrow",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^7.0.15"
+    "@types/node": "^7.0.15",
+    "typescript": "^2.3.0"
   }
 }
