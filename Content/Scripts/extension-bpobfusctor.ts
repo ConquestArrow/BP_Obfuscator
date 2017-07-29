@@ -81,7 +81,7 @@ function main(){
     let isRemovingCommentBubble = true;
 
     let isRename = {
-        [CmdNum.RenameVariable]:true,
+        [CmdNum.RenameVariable]:false,
         [CmdNum.RenameFunction]:false,
         [CmdNum.RenameMacro]:false
     }
@@ -797,10 +797,10 @@ function main(){
         b.EndSection()
 
         b.BeginSection("Rename")
-            b.AddWidget(I(UMG.text({Font:menuFont},"Rename")),"",true)
-            b.AddToolBarButton(commands.CommandInfos[CmdNum.RenameVariable])
-            b.AddToolBarButton(commands.CommandInfos[CmdNum.RenameFunction])
-            b.AddToolBarButton(commands.CommandInfos[CmdNum.RenameMacro])
+            //b.AddWidget(I(UMG.text({Font:menuFont},"Rename")),"",true)
+            //b.AddToolBarButton(commands.CommandInfos[CmdNum.RenameVariable])
+            //b.AddToolBarButton(commands.CommandInfos[CmdNum.RenameFunction])
+            //b.AddToolBarButton(commands.CommandInfos[CmdNum.RenameMacro])
         b.EndSection()
 
     }
@@ -1062,7 +1062,6 @@ function main(){
             g = obfuscateLayout(g, currentLayoutOption);
 
             //remove all comment node
-            //TODO
             if(isRemovingCommentNode){
                 g.Nodes = g.Nodes.filter( v => {
                     console.log("node is", v.GetName())
@@ -1073,6 +1072,15 @@ function main(){
 
             //remove all comment bubble text
             if(isRemovingCommentBubble)removeAllCommentBubbles(g)
+            
+            //rename all variables
+            //not work...
+            if(isRename[CmdNum.RenameVariable])renameAllVariables(g)
+
+            if(isRename[CmdNum.RenameFunction])renameAllFunctions(g)
+
+
+            if(isRename[CmdNum.RenameMacro])renameAllMacros(g)
 
 
             //set dirty
@@ -1151,8 +1159,86 @@ function main(){
         })
 
     }
-     
+    
+    //@TODO
+    //not work..,
+    function renameAllVariables(g:JavascriptGraphEdGraph){
+        console.log("renameAllVariables")
 
+        let out = g.GetOutermost()
+        console.log("outer",out.GetName())
+
+        out.GetFields(true).forEach(v => {
+            //console.log(`out[${v.GetName()}] ${v} ${JSON.stringify(v, null, 2)}`)
+            //if(v instanceof ArrayProperty){
+                
+            //console.log(`out.${v.GetName()}[${ v.GetFields(false) }]`)
+            //v.GetFields(true).forEach(x => console.log(`   [${x.GetName()}] ${x} ${JSON.stringify(x, null, 2)}`))
+            //}
+        })
+
+        let b = out as Blueprint
+        console.log("generatedClass", b)
+
+
+        //let b = out  as Blueprint
+        //b.NewVariables
+        //    .forEach(v => console.log(`vars ${v.FriendlyName} : ${JSON.stringify(v, null, 2)}`))
+
+
+        g.Nodes.forEach(v => {
+            console.log("node",v, typeof v)
+            if(v instanceof K2Node_VariableGet){
+
+                //g.GetFields(false).forEach(x => console.log(`g[${ x.GetName() }] ${x}`))
+                
+
+                //if(!v.bCanRenameNode)return
+                console.log("vVariableName",v.VariableReference.MemberName)
+
+                console.log("v.VariableReference", JSON.stringify(v.VariableReference, null, 2))
+
+                console.log("v.VariableReference.MemberParent", v.VariableReference.MemberScope)
+
+
+                //read only?
+                v.VariableReference.MemberName = v.VariableReference.MemberGuid.ToString()
+            }
+
+            if(v instanceof K2Node_FunctionEntry){
+                v.ModifyObject(true)
+                v.LocalVariables.forEach(x => {
+                    console.log(`localvars[${x.VarName}]:${JSON.stringify(x, null, 2)}`)
+                    x.VarName = "hogehoge"
+                    x.FriendlyName = "Hoge Hoge"
+                    console.log(`localvars[${x.VarName}]:${JSON.stringify(x, null, 2)}`)
+                })
+                v.PostEditChange()
+                v.MarkPackageDirty()
+                
+            }
+        })
+    }
+
+    //@TODO
+    //not work...
+    function renameAllFunctions(g:JavascriptGraphEdGraph){
+        
+        let bp = g.GetOuter() as Blueprint;
+        bp.FunctionGraphs.forEach(v => {
+            console.log(v.GetName(), JSON.stringify(v, null, 2))
+        })
+
+        let bpg = Blueprint.Load(bp.GetPathName()).GeneratedClass
+        bpg.GetClassObject().AllNodes.forEach((v:any) => {
+            console.log(`Node[${v.GetName()}] ${v}`)
+        })
+    }
+
+    //@TODO
+    function renameAllMacros(g:JavascriptGraphEdGraph){
+
+    }
 
     return ()=>{
         //clean up
