@@ -41,10 +41,29 @@ function main(){
     w.AppearanceInfo = appear;
 
 
-    let targetBPs = [
-        bp,
-        Blueprint.Load("/Game/BP_2")
+    let targetBPs:Blueprint[] = [
+        //bp,
+        //Blueprint.Load("/Game/BP_2")
     ]
+
+    //graph tree view
+    let graphTree:JavascriptTreeView
+
+    //PropertyEditor view
+    class ShowProps{
+        myInt:number;
+        myIntArray:number[];
+        blueprints:any[]
+        ctor(){
+            this.blueprints = targetBPs;
+        }
+        properties(){
+            this.blueprints /* Category:Select Blueprints+SimpleDisplay+AssetRegistrySearchable+EditAnywhere+Blueprint[] */;
+        }
+    }
+    let UShowProps = UClass()(global, ShowProps)
+    let ushowProp = new UShowProps();
+
 
     /* -------------------------
     commands
@@ -105,6 +124,9 @@ function main(){
 
     //menubar Font
     const menuFont = {FontObject:GEngine.TinyFont, Size:10};
+
+    //header Font
+    const headerFont = {FontObject:GEngine.SubtitleFont, Size:11}
 
     //toolbar button style
     let ButtonStyleName = "ToolbarButtonStyle"
@@ -509,6 +531,7 @@ function main(){
                     }),
                     UMG.span(
                         {'slot.size.size-rule' : ESlateSizeRule.Fill,},
+                        //left side 
                         UMG.div(
                             {
                                 Slot:{
@@ -520,6 +543,52 @@ function main(){
                                 } as any,
                                 //'slot.size.size-rule' : ESlateSizeRule.Fill
                             },
+                            UMG(Border,{
+                                    VerticalAlignment: EVerticalAlignment.VAlign_Top,
+                                    'slot.size.size-rule' : ESlateSizeRule.Automatic,
+                                    //Padding:{Left:5, Right:5} as Margin,
+                                    Background: editorStyle.GetBrush('ProjectBrowser.Background')
+                                },
+                                UMG(PropertyEditor,
+                                    {
+                                        'slot.size.size-rule' : ESlateSizeRule.Automatic,
+                                        bHideSelectionTip:true,
+                                        OnChange:(prop:string)=>{
+                                            console.log(prop, ushowProp[prop])
+                                            
+                                            
+                                            targetBPs = ushowProp[prop].filter((v:any) => !!v);
+                                            targetBPs.forEach(v => {
+                                                console.log(v.GetName())
+                                            })
+
+                                            targetBPs = targetBPs.filter((x, i, self) => self.indexOf(x) === i);
+
+                                            //graphTree.Items = targetBPs;
+
+                                            graphTree.Items = []
+                                            graphTree.Items = targetBPs
+                                            
+
+                                            let p = graphTree.GetParent()
+                                            //p.RemoveChild(graphTree)
+                                            //p.AddChild(graphTree)
+                                            graphTree.RequestTreeRefresh()
+                                        },
+                                        $link:(elem:PropertyEditor)=>{
+                                            elem.SetObject(ushowProp, true);
+                                            (elem as any).updateData = (_:any) => {
+                                                elem.SetObject(ushowProp, true)
+                                            }
+                                        },
+                                        $unlink:(elem:PropertyEditor)=>{
+
+                                        }
+                                    }
+                                ),
+                            ),
+                            //loaded graoh node tree
+                            UMG.text({Font:headerFont}, "Select graph"),
                             UMG(Border, {
                                     //'slot.size.size-rule' : ESlateSizeRule.Automatic,
                                     //'slot.size.vertical-align' : EVerticalAlignment.VAlign_Fill,
@@ -630,8 +699,13 @@ function main(){
                                                 }
                                             };
 
+                                            (<any>elem).update = () => {
+                                                elem.RequestTreeRefresh()
+                                            }
+
                                             elem.SetSingleExpandedItem(elem.Items[0])
 
+                                            graphTree = elem;
                                             
                                     },
                                     $unlink:()=>{
@@ -1247,6 +1321,7 @@ function main(){
         (<any>global).tabGroup = null;
         (<any>commands).destroy()
         toolBtnStyle.Unregister()
+        UShowProps = null;
         console.log("clear!")
         return;
     }
