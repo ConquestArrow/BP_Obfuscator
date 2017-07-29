@@ -2,7 +2,8 @@ import bootstrap from "./bootstrap"
 import * as UMG from "UMG"
 const I = require('instantiator');
 const EMaker = require("editor-maker");
-const UClass = require("uclass")
+//const UClass = require("uclass")
+import UClass from "uclass"
 
 
 
@@ -59,7 +60,7 @@ function main(){
             this.blueprints /* Category:Select Blueprints+SimpleDisplay+AssetRegistrySearchable+EditAnywhere+Blueprint[] */;
         }
     }
-    let UShowProps = UClass()(global, ShowProps)
+    let UShowProps = UClass<Class, ShowProps>()(global, ShowProps)
     let ushowProp = new UShowProps();
 
 
@@ -554,10 +555,13 @@ function main(){
                                         'slot.size.size-rule' : ESlateSizeRule.Automatic,
                                         bHideSelectionTip:true,
                                         OnChange:(prop:string)=>{
+
+                                            if(prop != "blueprints")return;
+
                                             console.log(prop, ushowProp[prop])
                                             
                                             
-                                            targetBPs = ushowProp[prop].filter((v:any) => !!v);
+                                            targetBPs = ushowProp[prop].filter((v:Blueprint) => !!v);
                                             targetBPs.forEach(v => {
                                                 console.log(v.GetName())
                                             })
