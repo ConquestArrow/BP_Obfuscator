@@ -678,18 +678,9 @@ function main(){
                                                     graphView.SetGraph(graph)
                                                     console.log("set graph")
                                                     
-                                                    let parent = graphView.GetParent();
-
-                                                    //console.log(JSON.stringify(parent.SlotAsHorizontalBoxSlot()))
-
                                                     
 
-                                                    //replacing EdGraph view
-                                                    parent.RemoveChild(graphView);
-                                                    //parent.ForceLayoutPrepass()
-                                                    parent.AddChild(graphView);
-
-                                                    
+                                                    refreshGraphView()
 
                                                     
 
@@ -1098,7 +1089,17 @@ function main(){
         commandList = graphCmd
     }
 
+    /**
+     * refresh 
+     */
+    function refreshGraphView(){
+        let parent = graphView.GetParent();
 
+        //replacing EdGraph view
+        parent.RemoveChild(graphView);
+        //parent.ForceLayoutPrepass()
+        parent.AddChild(graphView);
+    }
     
 
     /**
@@ -1181,6 +1182,7 @@ function main(){
             }
         });
 
+        refreshGraphView()
         
     }
 
