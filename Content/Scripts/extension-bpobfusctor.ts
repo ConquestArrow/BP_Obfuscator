@@ -510,6 +510,8 @@ function main(){
                         }
                     },
                     //menu bar
+                    /*
+                    //this cause editor crash when editor exit
                     UMG(JavascriptMultiBox,{
                         OnHook:(id:string, elem:JavascriptMultiBox, builder:JavascriptMenuBuilder)=>{
                             console.log("create menu bar", id)
@@ -528,7 +530,7 @@ function main(){
                                 })
                             )
                         }
-                    }),
+                    }),*/
                     UMG.span(
                         {'slot.size.size-rule' : ESlateSizeRule.Fill,},
                         //left side 
@@ -1081,6 +1083,7 @@ function main(){
         }
 
         function uninit() {
+            
             cmds.Uninitialize();
             context.Destroy();
         }
@@ -1316,12 +1319,14 @@ function main(){
 
     return ()=>{
         //clean up
-        
-        (<any>global).editorGroup = null;
-        (<any>global).tabGroup = null;
-        (<any>commands).destroy()
-        toolBtnStyle.Unregister()
-        UShowProps = null;
+        $execEditor(()=>{
+            
+            (<any>global).editorGroup = null;
+            (<any>global).tabGroup = null;
+            (<any>commands).destroy()
+            toolBtnStyle.Unregister()
+            UShowProps = null;
+        })
         console.log("clear!")
         return;
     }
