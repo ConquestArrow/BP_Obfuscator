@@ -4,9 +4,7 @@ const I = require('instantiator');
 const EMaker = require("editor-maker");
 const UClass = require("uclass")
 
-declare let Root:JavascriptEditorTick;
-declare let $execTransaction:(oparationName:string, fn:()=>void)=>void;
-declare let $execEditor:(fn:()=>void)=>void;
+
 
 function main(){
     
@@ -1259,6 +1257,7 @@ function main(){
         let b = out as Blueprint
         console.log("generatedClass", b)
 
+        
 
         //let b = out  as Blueprint
         //b.NewVariables
