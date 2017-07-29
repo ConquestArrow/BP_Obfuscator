@@ -52,7 +52,7 @@ function main(){
     class ShowProps{
         myInt:number;
         myIntArray:number[];
-        blueprints:any[]
+        blueprints:Blueprint[]
         ctor(){
             this.blueprints = targetBPs;
         }
