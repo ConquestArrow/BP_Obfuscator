@@ -1,11 +1,17 @@
 import bootstrap from "./bootstrap"
-import * as UMG from "UMG"
+import * as UMG from 'UMG';
 const I = require('instantiator');
 const EMaker = require("editor-maker");
 //const UClass = require("uclass")
 import UClass from "uclass"
 
 
+//extend global
+declare var global: {
+    editorGroup:JavascriptWorkspaceItem;
+    tabGroup:JavascriptWorkspaceItem;
+    innerGroup:JavascriptWorkspaceItem;
+}
 
 function main(){
     
@@ -13,16 +19,16 @@ function main(){
     let GWorld = GEngine.GetEditorWorld()
 
     //menu group settings
-    if(!(<any>global).editorGroup){
-        (<any>global).editorGroup = JavascriptWorkspaceItem.AddGroup(JavascriptWorkspaceItem.GetGroup("Root"), "BP Tools");
+    if(!global.editorGroup){
+        global.editorGroup = JavascriptWorkspaceItem.AddGroup(JavascriptWorkspaceItem.GetGroup("Root"), "BP Tools");
     }
 
-    if(!(<any>global).tabGroup){
-        (<any>global).tabGroup = JavascriptWorkspaceItem.AddGroup((<any>global).editorGroup, "Tabs");
+    if(!global.tabGroup){
+        global.tabGroup = JavascriptWorkspaceItem.AddGroup(global.editorGroup, "Tabs");
     }
 
-    if(!(<any>global).innerGroup){
-        (<any>global).innerGroup = JavascriptWorkspaceItem.AddGroup((<any>global).tabGroup, "Inner");
+    if(!global.innerGroup){
+        global.innerGroup = JavascriptWorkspaceItem.AddGroup(global.tabGroup, "Inner");
     }
 
     let bp = Blueprint.Load("/Game/BP_Sample")  //tmp
@@ -225,7 +231,7 @@ function main(){
                 TabId:"MenuTab",
                 Role:EJavascriptTabRole.PanelTab,
                 DisplayName:"Menu",
-                Group: (<any>global).tabGroup
+                Group: global.tabGroup
             },
             ()=>{
                 return I(UMG.text({},"menu"))
@@ -239,7 +245,7 @@ function main(){
                 TabId:"OptionTab",
                 Role:EJavascriptTabRole.PanelTab,
                 DisplayName:"Options",
-                Group: (<any>global).tabGroup
+                Group: global.tabGroup
             },
             ()=>{
                 return I(UMG.text({},"options"))
@@ -253,7 +259,7 @@ function main(){
                 TabId:"TargetTab",
                 Role:EJavascriptTabRole.PanelTab,
                 DisplayName:"TargetGraphs",
-                Group: (<any>global).tabGroup
+                Group: global.tabGroup
             },
             ()=>{
                 return I(UMG.div(
@@ -361,7 +367,7 @@ function main(){
                 TabId:"GraphTab",
                 Role:EJavascriptTabRole.PanelTab,
                 DisplayName:"GraphView",
-                Group: (<any>global).tabGroup
+                Group: global.tabGroup
             },
             //()=> w,
             () => {
@@ -412,7 +418,7 @@ function main(){
                     TabId:"Inner1",
                     Role:EJavascriptTabRole.PanelTab,
                     DisplayName:"GraphViewInner",
-                    Group: (<any>global).innerGroup
+                    Group: global.innerGroup
                 },()=>graphTab)]
                 tmInner.Layout = JSON.stringify({
                     Type:"Layout",
@@ -492,7 +498,7 @@ function main(){
                 DisplayName:"BP Obfuscator",
                 TabId: "BPObfuscator@",
                 Role: EJavascriptTabRole.MajorTab,
-                Group: (<any>global).editorGroup
+                Group: global.editorGroup
             },
             () => I(
                 
@@ -1326,8 +1332,8 @@ function main(){
         //clean up
         $execEditor(()=>{
             
-            (<any>global).editorGroup = null;
-            (<any>global).tabGroup = null;
+            global.editorGroup = null;
+            global.tabGroup = null;
             (<any>commands).destroy()
             toolBtnStyle.Unregister()
             UShowProps = null;
