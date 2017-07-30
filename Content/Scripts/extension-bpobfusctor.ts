@@ -1312,15 +1312,12 @@ function main(){
     //not work...
     function renameAllFunctions(g:JavascriptGraphEdGraph){
         
-        let bp = g.GetOuter() as Blueprint;
+        let bp = g.GetOuter<Blueprint>()// as Blueprint;
         bp.FunctionGraphs.forEach(v => {
             console.log(v.GetName(), JSON.stringify(v, null, 2))
         })
 
         let bpg = Blueprint.Load(bp.GetPathName()).GeneratedClass
-        bpg.GetClassObject().AllNodes.forEach((v:any) => {
-            console.log(`Node[${v.GetName()}] ${v}`)
-        })
     }
 
     //@TODO
