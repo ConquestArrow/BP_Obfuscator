@@ -36,3 +36,18 @@ declare function $execTransaction(oparationName:string, fn:()=>void):void;
  * @url https://github.com/ncsoft/Unreal.js/wiki/Playing-within-editor#editor-script-execution-guard
  */
 declare function $execEditor(fn:()=>void):void;
+
+
+declare interface UObject {
+    /**
+     * Get a outer object with type parameter
+     */
+    GetOuter<T extends UObject = UObject>():T;
+    /**
+     * Get a outer most object with type parameter
+     */
+    GetOutermost<T extends UObject  = UObject>():T;
+}
+
+
+
