@@ -51,3 +51,25 @@ declare interface UObject {
 
 
 
+declare interface Blueprint<T = UObject>{
+    GeneratedClass:GeneratedClassConstructor<T>
+    ;
+}
+
+/**
+ * BP Generated class constructor
+ * This class name is "BP name" + `_C`.(e.g. `BP_Sample_C`)
+ */
+declare interface GeneratedClassConstructor<T> extends Function{
+    /** `[BlueprintClassName]_C` */
+    readonly name:string;
+    new (...args:any[]):T;
+    StaticClass:UnrealEngineClass;
+    C(Other: UObject): UObject;
+    Find(Outer: UObject, ResourceName: string):UObject;
+    GetClassObject():BlueprintGeneratedClass;
+    CreateDefaultSubobject(Name: string, Transient?: boolean, Required?: boolean, Abstract?: boolean): UObject;
+    SetDefaultSubobjectClass(Name:string):void;
+    GetDefaultObject(): T;
+    GetDefaultSubobjectByName(Name: string): UObject;
+}
