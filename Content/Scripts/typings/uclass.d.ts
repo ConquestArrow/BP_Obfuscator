@@ -58,7 +58,7 @@ interface SourceClass{
 /**
  * uclassified object class
  */
-interface UClassified<T extends (Class|Struct), S extends SourceClass>{
+export interface UClassified<T extends (Class|Struct), S extends SourceClass>{
     new (): 
         T & {
             //declared properties in `SourceClass.properties()`
